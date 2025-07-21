@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <center>
+    <h1>Dashboard</h1>
+    <h2><p>Welcome to your dashboard, <%= user.username %>!</p></h2>
+    
+
+    <h3>Lookup a Word</h3>
+    <form id="wordForm">
+        <input type="text" name="word" id="wordInput" placeholder="Enter a word" required>
+        <button type="submit">Get Meaning</button>
+    </form>
+    <div id="wordMeaning"></div>
+     </center>
+    <script src="/scripts.js"></script>
+    <script>
+        document.getElementById('wordForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const word = document.getElementById('wordInput').value;
+            const response = await fetch('/getMeaning', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ word })
+            });
+
+            const result = await response.json();
+            document.getElementById('wordMeaning').innerText = result.meaning;
+        });
+    </script>
+</body>
+</html>
